@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -13,9 +14,11 @@ import (
 
 var validate = validator.New()
 
+var messages []models.Message
+
 func Message() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		_, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		var message models.Message
 		if err := c.BindJSON(&message); err != nil {
@@ -27,6 +30,16 @@ func Message() gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusCreated, ctx)
+		messages = append(messages, message)
+		fmt.Println(messages)
+
+		c.JSON(http.StatusCreated, message)
 	}
+}
+
+func Scheduler() {
+	for range time.Tick(1 * time.Second) {
+		fmt.Println(messages)
+	}
+
 }

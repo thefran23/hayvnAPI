@@ -4,6 +4,8 @@ import (
 	"github.com/gin-contrib/cors"
 
 	"github.com/gin-gonic/gin"
+	"github.com/thefran23/hayvnAPI/controllers"
+	"github.com/thefran23/hayvnAPI/routes"
 )
 
 func main() {
@@ -12,7 +14,8 @@ func main() {
 
 	config.AllowOrigins = []string{"*"}
 	router.Use(CORS())
-
+	routes.MessagesRoute(router)
+	go controllers.Scheduler()
 	router.Run("localhost:8080")
 }
 

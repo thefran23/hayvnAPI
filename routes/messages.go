@@ -6,6 +6,6 @@ import (
 )
 
 func MessagesRoute(router *gin.Engine) {
-	router.POST("/vineyard", func(c *gin.Context) {}, controllers.Message())
+	router.POST("/message", func(c *gin.Context) {}, controllers.Message())
 
 }
